@@ -88,6 +88,10 @@ const form = document.getElementById('form');
 const search = document.getElementById('search');
 const tagsEl = document.getElementById('tags');
 
+const prev = document.getElementById('prev');
+const next = document.getElementById('next');
+const current = document.getElementById('current');
+
 var selectedGenre = []
 setGenre();
 function setGenre() {
@@ -210,8 +214,8 @@ function getColor(vote) {
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     const searchTerm = search.value;
-selectedGenre=[];
-highlightSelection();
+    selectedGenre = [];
+    highlightSelection();
     if (searchTerm) {
         getMovies(searchURL + '&query=' + searchTerm)
     } else {
