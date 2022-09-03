@@ -135,8 +135,10 @@ main {
 
 .tag {
     color: #fff;
-    padding: 10px 15px;
-    background-color: orange;
+    padding: 10px 20px;
+    background-color: rgb(87, 163, 52);
     border-radius: 50px;
-    margin: 5px 5px;
+    margin:5px;
+    display: inline-block;
+    cursor: pointer;
 }
