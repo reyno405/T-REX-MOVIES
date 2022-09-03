@@ -124,13 +124,32 @@ function highlightSelection() {
     tags.forEach(tag => {
         tag.classList.remove('highlight')
     })
+    clearBTN();
     if (selectedGenre.length != 0) {
-        selectedGenre.forEach(id=> {
+        selectedGenre.forEach(id => {
             const highlightedTag = document.getElementById(id);
             highlightedTag.classList.add('highlight');
         })
     }
-   
+
+}
+
+function clearBTN() {
+    let clearBTN = document.getElementById('clear');
+    if (clearBTN) {
+        clearBTN.classList.add('highlight')
+    } else {
+        let clear = document.createElement('div');
+        clear.classList.add('tag', 'highlight');
+        clear.id = 'clear';
+        clear.innerText = 'clear x';
+        clear.addEventListener('click', () => {
+            selectedGenre = [];
+            setGenre();
+            getMovies(API_URL);
+        })
+        tagsEl.append(clear);
+    }
 }
 
 getMovies(API_URL);
@@ -139,12 +158,12 @@ function getMovies(url) {
 
     fetch(url).then(res => res.json()).then(data => {
         console.log(data.results)
-        if(data.results.length !== 0) {
-showMovies(data.results);
-        }else{
-            main.innerHTML= `<h1 class="no-results">No Results Found<h1>`
+        if (data.results.length !== 0) {
+            showMovies(data.results);
+        } else {
+            main.innerHTML = `<h1 class="no-results">No Results Found<h1>`
         }
-       
+
     })
 
 }
@@ -158,7 +177,7 @@ function showMovies(data) {
         movieEl.classList.add('movie')
         movieEl.innerHTML = `
         <div class="movie">
-            <img src="${poster_path? IMG_URL + poster_path: "http://via.placeholder.com/1080x1580"}" alt="${title}" >
+            <img src="${poster_path ? IMG_URL + poster_path : "http://via.placeholder.com/1080x1580"}" alt="${title}" >
 
             <div class="movie-info">
                 <h3>"${title}</h3>
@@ -191,7 +210,8 @@ function getColor(vote) {
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     const searchTerm = search.value;
-
+selectedGenre=[];
+highlightSelection();
     if (searchTerm) {
         getMovies(searchURL + '&query=' + searchTerm)
     } else {
