@@ -88,16 +88,49 @@ const form = document.getElementById('form');
 const search = document.getElementById('search');
 const tagsEl = document.getElementById('tags');
 
+var selectedGenre = []
 setGenre();
 function setGenre() {
-tagsEl.innerHTML = '';
-genres.forEach(genres => {
-    const t = document.createElement('div');
-    t.classList.add('tag');
-    t.id=genres.id;
-    t.innerText = genres.name;
-    tagsEl.append(t);
-})
+    tagsEl.innerHTML = '';
+    genres.forEach(genres => {
+        const t = document.createElement('div');
+        t.classList.add('tag');
+        t.id = genres.id;
+        t.innerText = genres.name;
+        t.addEventListener('click', () => {
+            if (selectedGenre.length == 0) {
+                selectedGenre.push(genres.id);
+            } else {
+                if (selectedGenre.includes(genres.id)) {
+                    selectedGenre.forEach((id, idx) => {
+                        if (id == genres.id) {
+                            selectedGenre.splice(idx, 1);
+                        }
+                    })
+                } else {
+                    selectedGenre.push(genres.id);
+                }
+            }
+            console.log(selectedGenre)
+            getMovies(API_URL + '&with_genres=' + encodeURI(selectedGenre.join(' , ')))
+            highlightSelection()
+        })
+        tagsEl.append(t);
+    })
+}
+
+function highlightSelection() {
+    const tags = document.querySelectorAll('.tag');
+    tags.forEach(tag => {
+        tag.classList.remove('highlight')
+    })
+    if (selectedGenre.length != 0) {
+        selectedGenre.forEach(id=> {
+            const highlightedTag = document.getElementById(id);
+            highlightedTag.classList.add('highlight');
+        })
+    }
+   
 }
 
 getMovies(API_URL);
@@ -106,7 +139,12 @@ function getMovies(url) {
 
     fetch(url).then(res => res.json()).then(data => {
         console.log(data.results)
-        showMovies(data.results);
+        if(data.results.length !== 0) {
+showMovies(data.results);
+        }else{
+            main.innerHTML= `<h1 class="no-results">No Results Found<h1>`
+        }
+       
     })
 
 }
@@ -120,7 +158,7 @@ function showMovies(data) {
         movieEl.classList.add('movie')
         movieEl.innerHTML = `
         <div class="movie">
-            <img src="${IMG_URL + poster_path}" alt="${title}" >
+            <img src="${poster_path? IMG_URL + poster_path: "http://via.placeholder.com/1080x1580"}" alt="${title}" >
 
             <div class="movie-info">
                 <h3>"${title}</h3>

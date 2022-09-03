@@ -142,3 +142,11 @@ main {
     display: inline-block;
     cursor: pointer;
 }
+
+.tag.highlight {
+    background-color: rgb(209, 14, 14);
+}
+
+.no-results {
+    color: #fff;
+}
