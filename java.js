@@ -98,7 +98,6 @@ var prevPage = 3;
 var lastUrl = '';
 var totalPage = 100;
 
-
 var selectedGenre = []
 setGenre();
 function setGenre() {
@@ -166,11 +165,15 @@ function clearBTN() {
 getMovies(API_URL);
 
 function getMovies(url) {
-
+    lastUrl = url;
     fetch(url).then(res => res.json()).then(data => {
         console.log(data.results)
         if (data.results.length !== 0) {
             showMovies(data.results);
+            currentPage = data.page;
+            nextPage = currentPage + 1;
+            prevPage = currentPage - 1;
+            totalPage = data.totalPage;
         } else {
             main.innerHTML = `<h1 class="no-results">No Results Found<h1>`
         }
@@ -229,3 +232,19 @@ form.addEventListener('submit', (e) => {
         getMovies(API_URL);
     }
 })
+
+next.addEventListener('click', () => {
+    if (nextPage <= totalPage) {
+        pageCall(nextPage);
+    }
+})
+
+function pageCall(page) {
+    let urlSplit = lastUrl.split('?');
+    let queryParams = urlSplit[1].split('&');
+    let key = queryParams[queryParams.length - 1].split('=');
+    if (key[0] != 'page') {
+        let url = lastUrl + '&page=' + page;
+        getMovies(url);
+    }
+}
