@@ -26,7 +26,14 @@ header{
     color: antiquewhite;
     display: flex;
     justify-content: center
-    
+}
+
+.jumbotron p {
+    color: antiquewhite;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 35px;
 }
 
 .search {
