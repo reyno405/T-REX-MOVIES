@@ -92,6 +92,13 @@ const prev = document.getElementById('prev');
 const next = document.getElementById('next');
 const current = document.getElementById('current');
 
+var currentPage = 1;
+var nextPage = 2;
+var prevPage = 3;
+var lastUrl = '';
+var totalPage = 100;
+
+
 var selectedGenre = []
 setGenre();
 function setGenre() {
